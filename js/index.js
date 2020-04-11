@@ -15,11 +15,11 @@ const navItems = document.querySelectorAll(".nav-link");
 navItems.forEach((navItem) => {
     navItem.addEventListener("click", (event) => {
         alert(event.x);
+        event.preventDefault();
     });
 });
 
 const signUpBtns = document.querySelectorAll(".destination .btn");
-console.log(signUpBtns);
 
 signUpBtns.forEach((signUpBtn) => {
     signUpBtn.addEventListener("dblclick", (event) => {
@@ -63,42 +63,41 @@ welcomeH2.addEventListener("wheel", (event) => {
 
 
 //footer animation
+//todo: make this work
 const footerP = document.querySelector(".footer p");
-footerP.addEventListener("copy",()=>{
-    //footerP.textContent = "You copied: " + window.clipboardData.getData("Text");
-    navigator.permissions.query({name: "clipboard-read"}).then(result =>{
-        if(result.state === "granted" || result.state === "prompt"){
-            navigator.clipboard.readText().then(data =>{
-                for (let i = 0; i < data.items.length; i++) {
-                    if (data.items[i].type !== "text/plain") {
-                        alert("Clipboard contains non-text data. Unable to access it.");
-                    } else {
-                        textElem.innerText = data.items[i].getAs("text/plain");
-                    }
-                }
-            });
-        }
-    });
+footerP.addEventListener("select",(event)=>{
+    console.log(event.target);
+    //const selection = event.target.value.substring(event.target.selectionStart, event.target.selectionEnd);
+    //console.log(selection);
 });
 /*
-navigator.permissions.query({name: "clipboard-read"}).then(result => {
-  // If permission to read the clipboard is granted or if the user will
-  // be prompted to allow it, we proceed.
-
-  if (result.state == "granted" || result.state == "prompt") {
-    navigator.clipboard.read().then(data => {
-      for (let i=0; i<data.items.length; i++) {
-        if (data.items[i].type != "text/plain") {
-          alert("Clipboard contains non-text data. Unable to access it.");
-        } else {
-          textElem.innerText = data.items[i].getAs("text/plain");
-        }
-      }
-    });
-  }
-});
+function logSelection(event) {
+  const log = document.getElementById('log');
+  const selection = event.target.value.substring(event.target.selectionStart, event.target.selectionEnd);
+  log.textContent = `You selected: ${selection}`;
+}
  */
 
+let timeoutID;
+const introP = document.querySelector(".intro p");
+introP.addEventListener("wheel", (event) => {
+    event.stopPropagation();
+    event.target.style.backgroundColor = "limegreen";
+    clearTimeout(timeoutID);
+    timeoutID = setTimeout(resetIntroP, 50);
+});
 
+function resetIntroP(){
+    introP.style.backgroundColor = "white";
+}
 
-
+body = document.querySelector("body");
+let bodyTimeout;
+body.addEventListener("wheel", (event) =>{
+    body.style.backgroundColor = "rebeccapurple";
+    clearTimeout(bodyTimeout);
+    bodyTimeout = setTimeout(resetBody, 50);
+});
+function resetBody(){
+    body.style.backgroundColor = "white";
+}
